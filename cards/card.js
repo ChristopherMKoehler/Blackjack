@@ -1,0 +1,58 @@
+const suits = ["spades", "clubs", "diamonds", "hearts"];
+const values = {
+  2: 2,
+  3: 3,
+  4: 4,
+  5: 5,
+  6: 6,
+  7: 7,
+  8: 8,
+  9: 9,
+  10: 10,
+  "Jack" : 10,
+  "Oueen": 10,
+  "King": 10,
+  "Ace": 11
+}
+
+class Card {
+  constructor(value, suit) {
+    this.value = value;
+    this.suit = suit;
+  }
+
+  static generateDeck() {
+    let cardArray = [];
+    suits.forEach((suit) => {
+      Object.keys(values).forEach((value) => cardArray.push(new Card(value, suit)))
+    })
+    return Card.shuffle(cardArray);
+  }
+
+  static shuffle(cardArray) {
+    let x, j;
+    for(let i = cardArray.length; i > 0; i--) {
+      let j = Math.floor(Math.random() * i);
+      let x = cardArray[i - 1];
+      cardArray[i - 1] = cardArray[j];
+      cardArray[j] = x;
+    }
+    return cardArray;
+  }
+
+  getValue() {
+    return values[this.value];
+  }
+
+  getSuit() {
+    return this.suit;
+  }
+
+  render() {
+    
+  }
+}
+
+window.Card = Card;
+
+export default Card;
