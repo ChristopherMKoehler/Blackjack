@@ -73,19 +73,19 @@
 "use strict";
 const suits = ["spades", "clubs", "diamonds", "hearts"];
 const values = {
-  2: 2,
-  3: 3,
-  4: 4,
-  5: 5,
-  6: 6,
-  7: 7,
-  8: 8,
-  9: 9,
-  10: 10,
-  "Jack" : 10,
-  "Oueen": 10,
-  "King": 10,
-  "Ace": 11
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "6": 6,
+  "7": 7,
+  "8": 8,
+  "9": 9,
+  "10": 10,
+  "jack" : 10,
+  "queen": 10,
+  "king": 10,
+  "ace": 11
 }
 
 class Card {
@@ -121,8 +121,8 @@ class Card {
     return this.suit;
   }
 
-  render() {
-    
+  getImageUrl() {
+    return this.value + "_of_" + this.getSuit() + ".png";
   }
 }
 
@@ -174,6 +174,10 @@ window.Card = __WEBPACK_IMPORTED_MODULE_0__cards_card__["a" /* default */];
 window.Deck = __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */];
 
 let deck = new __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */]();
+
+$(document).ready(function() {
+  $(".player-cards").append("<img src=./card_images/" + deck.cards[0].getImageUrl() + "></img>");
+});
 
 
 /***/ })
