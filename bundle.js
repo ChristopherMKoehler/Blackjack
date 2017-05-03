@@ -124,6 +124,10 @@ class Card {
   getImageUrl() {
     return this.value + "_of_" + this.getSuit() + ".png";
   }
+
+  isAce() {
+    return this.value === "ace";
+  }
 }
 
 window.Card = Card;
@@ -167,17 +171,70 @@ class Deck {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cards_deck__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__players_player__ = __webpack_require__(3);
+
 
 
 
 window.Card = __WEBPACK_IMPORTED_MODULE_0__cards_card__["a" /* default */];
 window.Deck = __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */];
 
-let deck = new __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */]();
-
 $(document).ready(function() {
-  $(".player-cards").append("<img src=./card_images/" + deck.cards[0].getImageUrl() + "></img>");
+  let deck = new __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */]();
+  let player = new __WEBPACK_IMPORTED_MODULE_2__players_player__["a" /* default */]();
+
+  player.receiveCard(deck.draw());
+  player.receiveCard(deck.draw());
+  window.player = player;
 });
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(0);
+
+
+class Player {
+  constructor() {
+    this.hand = [];
+  }
+
+  receiveCard(newCard) {
+    this.hand.push(newCard);
+    $(".player-cards").append("<img src=./card_images/" + newCard.getImageUrl() + "></img>")
+  }
+
+  clearHand() {
+    this.hand = [];
+    this.containsAce = false;
+    $(".player-cards").clear();
+  }
+
+  getTotal() {
+    let points = 0;
+    let aces = 0;
+
+    points = this.hand.reduce((accum, card) => {
+      if (card.isAce) { aces++ };
+      return accum + card.getValue();
+    }, 0);
+
+    for(let i = 0; i < aces; i++) {
+      if (points > 21) { points -= 10 };
+    }
+
+    return points;
+  }
+
+  busted() {
+    return this.getTotal() > 21;
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Player);
 
 
 /***/ })

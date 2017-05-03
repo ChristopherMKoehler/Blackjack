@@ -1,11 +1,15 @@
 import Card from './cards/card';
 import Deck from './cards/deck';
+import Player from './players/player';
 
 window.Card = Card;
 window.Deck = Deck;
 
-let deck = new Deck();
-
 $(document).ready(function() {
-  $(".player-cards").append("<img src=./card_images/" + deck.cards[0].getImageUrl() + "></img>");
+  let deck = new Deck();
+  let player = new Player();
+
+  player.receiveCard(deck.draw());
+  player.receiveCard(deck.draw());
+  window.player = player;
 });

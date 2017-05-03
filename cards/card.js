@@ -51,6 +51,10 @@ class Card {
   getImageUrl() {
     return this.value + "_of_" + this.getSuit() + ".png";
   }
+
+  isAce() {
+    return this.value === "ace";
+  }
 }
 
 window.Card = Card;
