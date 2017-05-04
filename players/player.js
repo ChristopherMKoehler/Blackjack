@@ -48,14 +48,6 @@ class Player {
   blackjack() {
     return this.getTotal() === 21;
   }
-
-  canSplit() {
-    if(this.hand.length === 2){
-      return this.hand[0].value === this.hand[1].value;
-    } else {
-      return false;
-    }
-  }
 }
 
 export default Player;

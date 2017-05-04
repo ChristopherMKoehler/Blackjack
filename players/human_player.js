@@ -36,6 +36,26 @@ class HumanPlayer extends Player {
       $('.current-bet').html("Current Bet: " + this.currentBet);
     }
   }
+
+  canSplit() {
+    if(this.hand.length === 2){
+      return this.hand[0].value === this.hand[1].value;
+    } else {
+      return false;
+    }
+  }
+
+  canDoubleDown() {
+    if(this.hand.length === 2 && this.getTotal() <= 11) {
+      return this.chipCount - (2 * this.currentBet) >= 0;
+    } else {
+      return false;
+    }
+  }
+
+  doubleCurrentBet() {
+    this.setCurrentBet(this.currentBet);
+  }
 }
 
 export default HumanPlayer;

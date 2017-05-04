@@ -235,7 +235,7 @@ const declareWinner = () => {
 }
 
 $(document).ready(function() {
-
+  $('#dd').hide();
   $('.end-game').hide();
   $('.play-action').hide();
 
@@ -256,12 +256,18 @@ $(document).ready(function() {
     $("#card").flip({
       trigger: "manual"
     });
+
     player.receiveCard(deck.draw());
     player.receiveCard(deck.draw());
+
     if(player.blackjack()) {
       handleWin(player)
     } else if(player.canSplit()) {
       $('.player-actions').append("<button class=split>Split</button>");
+    } else if(player.canDoubleDown()) {
+      $('#dd').show();
+    } else {
+      $("#dd").hide();
     }
   })
 
@@ -282,6 +288,14 @@ $(document).ready(function() {
   })
 
   $('.play-again').on("click", () => playAgain());
+
+  $("#dd").on("click", () => {
+    player.receiveCard(deck.draw());
+    player.doubleCurrentBet();
+    $("#card").flip(true);
+    dealer.makeMove();
+    declareWinner();
+  })
 });
 
 
@@ -340,14 +354,6 @@ class Player {
 
   blackjack() {
     return this.getTotal() === 21;
-  }
-
-  canSplit() {
-    if(this.hand.length === 2){
-      return this.hand[0].value === this.hand[1].value;
-    } else {
-      return false;
-    }
   }
 }
 
@@ -434,6 +440,26 @@ class HumanPlayer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default *
       this.currentBet += currentBet;
       $('.current-bet').html("Current Bet: " + this.currentBet);
     }
+  }
+
+  canSplit() {
+    if(this.hand.length === 2){
+      return this.hand[0].value === this.hand[1].value;
+    } else {
+      return false;
+    }
+  }
+
+  canDoubleDown() {
+    if(this.hand.length === 2 && this.getTotal() <= 11) {
+      return this.chipCount - (2 * this.currentBet) >= 0;
+    } else {
+      return false;
+    }
+  }
+
+  doubleCurrentBet() {
+    this.setCurrentBet(this.currentBet);
   }
 }
 

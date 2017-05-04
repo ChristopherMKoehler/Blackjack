@@ -59,7 +59,7 @@ const declareWinner = () => {
 }
 
 $(document).ready(function() {
-
+  $('#dd').hide();
   $('.end-game').hide();
   $('.play-action').hide();
 
@@ -80,12 +80,18 @@ $(document).ready(function() {
     $("#card").flip({
       trigger: "manual"
     });
+
     player.receiveCard(deck.draw());
     player.receiveCard(deck.draw());
+
     if(player.blackjack()) {
       handleWin(player)
     } else if(player.canSplit()) {
       $('.player-actions').append("<button class=split>Split</button>");
+    } else if(player.canDoubleDown()) {
+      $('#dd').show();
+    } else {
+      $("#dd").hide();
     }
   })
 
@@ -106,4 +112,12 @@ $(document).ready(function() {
   })
 
   $('.play-again').on("click", () => playAgain());
+
+  $("#dd").on("click", () => {
+    player.receiveCard(deck.draw());
+    player.doubleCurrentBet();
+    $("#card").flip(true);
+    dealer.makeMove();
+    declareWinner();
+  })
 });
