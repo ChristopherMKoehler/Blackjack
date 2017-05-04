@@ -13,7 +13,16 @@
   <body>
 
     <div class="table">
-      <div class="dealer-cards">
+
+      <div class="cards-container">
+        <div class="dealer-cards">
+        </div>
+
+        <h1 class="title">Blackjack</h1>
+
+
+        <div class="player-cards">
+        </div>
       </div>
 
       <div class='end-game'>
@@ -21,28 +30,29 @@
         <button class="play-again">Play Again</button>
       </div>
 
-      <div class="player-cards">
-      </div>
 
-      <div class='player-options'>
+      <div class="input-area">
         <div class="player-info">
           <h1 class="current-bet">Current Bet: 0</h1>
           <h1 class="chip-count">Total Chips: 2000</h1>
         </div>
-        <div class="player-actions">
-          <h1 class="bet-errors"></h1>
-          <button class="add-bet" value=100>Bet 100</button>
-          <button class="add-bet" value=200>Bet 200</button>
-          <button class="add-bet" value=500>Bet 500</button>
-          <button class="add-bet" value=1000>Bet 1000</button>
-          <button class="done-betting">Place your bet!</button>
+        <div class='player-options'>
+
+          <div class="player-actions">
+            <h1 class="bet-errors"></h1>
+            <button class="add-bet" value=100>Bet 100</button>
+            <button class="add-bet" value=200>Bet 200</button>
+            <button class="add-bet" value=500>Bet 500</button>
+            <button class="add-bet" value=1000>Bet 1000</button>
+            <button class="done-betting">Place your bet!</button>
 
 
-          <button class="play-action" value="stand">Stand</button>
-          <button class="play-action" value="hit">Hit</button>
-          <button id=dd value=dd>Double Down</button>
+            <button class="play-action" value="stand">Stand</button>
+            <button class="play-action" value="hit">Hit</button>
+            <button id=dd value=dd>Double Down</button>
+          </div>
+          <div class="bet-input"></div>
         </div>
-        <div class="bet-input"></div>
       </div>
     </div>
 

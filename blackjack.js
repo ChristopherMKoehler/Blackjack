@@ -26,6 +26,7 @@ const hideBetInput = () => {
 }
 
 const handleWin = (winner) => {
+  $("#dd").hide();
   player.updateChipCount(winner === player);
   $('.winner').html(winner === player ? "You win!" : "You Lose!");
   $('.play-action').hide();
@@ -96,6 +97,7 @@ $(document).ready(function() {
   })
 
   $('.play-action').on("click", (e) => {
+    $("#dd").hide();
     if(e.currentTarget.value === "hit") {
       player.receiveCard(deck.draw());
       if(player.busted()) {
