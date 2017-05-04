@@ -1,19 +1,20 @@
 import Card from '../cards/card';
 
 class Player {
-  constructor() {
+  constructor(playerStr) {
     this.hand = [];
+    this.playerStr = playerStr;
   }
 
   receiveCard(newCard) {
     this.hand.push(newCard);
-    $(".player-cards").append("<img src=./card_images/" + newCard.getImageUrl() + "></img>")
+    $("." + this.playerStr + "-cards").append("<img src=./card_images/" + newCard.getImageUrl() + "></img>")
   }
 
-  clearHand() {
+  clearHand(playerStr) {
     this.hand = [];
     this.containsAce = false;
-    $(".player-cards").clear();
+    $("." + this.playerStr + "-cards").clear();
   }
 
   getTotal() {
@@ -21,7 +22,7 @@ class Player {
     let aces = 0;
 
     points = this.hand.reduce((accum, card) => {
-      if (card.isAce) { aces++ };
+      if (card.isAce()) { aces++ };
       return accum + card.getValue();
     }, 0);
 
