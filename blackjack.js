@@ -29,6 +29,7 @@ const handleWin = (winner) => {
   player.updateChipCount(winner === player);
   $('.winner').html(winner === player ? "You win!" : "You Lose!");
   $('.play-action').hide();
+  $('.split').remove();
   $('.end-game').show();
 }
 
@@ -81,7 +82,11 @@ $(document).ready(function() {
     });
     player.receiveCard(deck.draw());
     player.receiveCard(deck.draw());
-    if(player.blackjack()) { handleWin(player) }
+    if(player.blackjack()) {
+      handleWin(player)
+    } else if(player.canSplit()) {
+      $('.player-actions').append("<button class=split>Split</button>");
+    }
   })
 
   $('.play-action').on("click", (e) => {
