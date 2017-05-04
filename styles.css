@@ -1,0 +1,13 @@
+.table {
+  background: #355e3b;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+img {
+  width: 120px;
+  margin: 10px;
+}
