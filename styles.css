@@ -11,3 +11,9 @@ img {
   width: 120px;
   margin: 10px;
 }
+
+.dealer-cards {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

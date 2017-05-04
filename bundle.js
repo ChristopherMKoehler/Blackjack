@@ -92,6 +92,7 @@ class Card {
   constructor(value, suit) {
     this.value = value;
     this.suit = suit;
+    this.faceUp = true;
   }
 
   static generateDeck() {
@@ -178,27 +179,97 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-window.Card = __WEBPACK_IMPORTED_MODULE_0__cards_card__["a" /* default */];
-window.Deck = __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */];
+//get the bet
+//deal cards 1 face down, 1 face up for dealer, both face up for player
+//take input to hit, stand or double down
+//run through dealer cards
+//display winner
+let deck = new __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */]();
+let dealer = new __WEBPACK_IMPORTED_MODULE_2__players_dealer__["a" /* default */](deck);
+let player = new __WEBPACK_IMPORTED_MODULE_3__players_human_player__["a" /* default */](deck);
+let winner = null;
 
+const resetHands = () => {
+  dealer.clearHand("dealer");
+  player.clearHand("player");
+}
+
+const showBetInput = () => {
+  $('.play-action').hide();
+  $('.add-bet').show();
+  $('.done-betting').show();
+}
+
+const hideBetInput = () => {
+  $('.play-action').show();
+  $('.add-bet').hide();
+  $('.done-betting').hide();
+}
+
+const handleWin = (winner) => {
+  player.updateChipCount(winner === player);
+  $('.winner').html(winner === player ? "You win!" : "You Lose!");
+  $('.play-action').hide();
+  $('.end-game').show();
+}
+
+const playAgain = () => {
+  if(player.chipCount <= 0) {
+    player.resetChipCount();
+  }
+  $('.end-game').hide();
+  resetHands();
+  showBetInput();
+}
+
+const declareWinner = () => {
+  let playerTotal = player.getTotal();
+  let dealerTotal = dealer.getTotal();
+}
 
 $(document).ready(function() {
-  let doneBetting = false;
+
+  $('.end-game').hide();
+  $('.play-action').hide();
 
   $('.add-bet').on("click", (e) => {
-    player.setCurrentBet(parseInt(e.currentTarget.value));
+    try{
+      player.setCurrentBet(parseInt(e.currentTarget.value));
+    } catch (e) {
+      $('.bet-errors').html(e.message + "");
+      $('.bet-errors').show();
+      $('.bet-errors').fadeOut(1000);
+    }
   })
 
   $('.done-betting').on("click", () => {
-    $('.add-bet').hide();
-    $('.done-betting').hide();
-    doneBetting = true;
+    hideBetInput();
+
+    dealer.makeStartingMove();
+    $("#card").flip({
+      trigger: "manual"
+    });
+    player.receiveCard(deck.draw());
+    player.receiveCard(deck.draw());
+    if(player.blackjack()) { handleWin(player) }
   })
 
-  let deck = new __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */]();
-  let dealer = new __WEBPACK_IMPORTED_MODULE_2__players_dealer__["a" /* default */](deck);
-  let player = new __WEBPACK_IMPORTED_MODULE_3__players_human_player__["a" /* default */](deck);
-  dealer.makeMove();
+  $('.play-action').on("click", (e) => {
+    if(e.currentTarget.value === "hit") {
+      player.receiveCard(deck.draw());
+      if(player.busted()) {
+        handleWin(dealer);
+      } else if(player.blackjack()) {
+        handleWin(player);
+      }
+    } else {
+      $("#card").flip();
+      dealer.makeMove();
+      declareWinner();
+    }
+  })
+
+  $('.play-again').on("click", () => playAgain());
 });
 
 
@@ -218,13 +289,21 @@ class Player {
 
   receiveCard(newCard) {
     this.hand.push(newCard);
-    $("." + this.playerStr + "-cards").append("<img src=./card_images/" + newCard.getImageUrl() + "></img>")
+    let id = newCard.faceUp ? "faceup" : "facedown";
+    if (newCard.faceUp){
+      $("." + this.playerStr + "-cards").append("<img id=" + id + " src=./card_images/" + newCard.getImageUrl() + "></img>");
+    } else {
+      $("." + this.playerStr + "-cards").append(
+      "<div id=card><div class=front><img src=./card_images/facedown.png></img> </div> <div class=back><img src=./card_images/" + newCard.getImageUrl() + "></img></div></div>"
+      );
+    }
+
   }
 
   clearHand(playerStr) {
     this.hand = [];
     this.containsAce = false;
-    $("." + this.playerStr + "-cards").clear();
+    $("." + this.playerStr + "-cards").html("");
   }
 
   getTotal() {
@@ -246,6 +325,10 @@ class Player {
   busted() {
     return this.getTotal() > 21;
   }
+
+  blackjack() {
+    return this.getTotal() === 21;
+  }
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Player);
@@ -265,6 +348,19 @@ class Dealer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default */] {
   constructor(deck) {
     super("dealer");
     this.deck = deck;
+  }
+
+  makeStartingMove() {
+    let firstCard = this.deck.draw();
+    let secondCard = this.deck.draw();
+
+    firstCard.faceUp = false;
+    this.receiveCard(firstCard);
+    this.receiveCard(secondCard);
+  }
+
+  showAll() {
+    
   }
 
   makeMove() {
@@ -295,9 +391,18 @@ class HumanPlayer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default *
     this.currentBet = 0;
   }
 
+  resetChipCount() {
+    this.chipCount = 2000;
+    this.currentBet = 0;
+    $('.current-bet').html("Current Bet: " + this.currentBet);
+    $('.chip-count').html("Total Chips: " + this.chipCount);
+  }
+
   updateChipCount(win) {
     this.chipCount += win ? this.currentBet : -1 * this.currentBet;
     this.currentBet = 0;
+    $('.current-bet').html("Current Bet: " + this.currentBet);
+    $('.chip-count').html("Total Chips: " + this.chipCount);
   }
 
   setCurrentBet(currentBet) {
@@ -305,7 +410,7 @@ class HumanPlayer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default *
       throw new Error("Not enough funds!")
     } else {
       this.currentBet += currentBet;
-      $('.current-bet').html("<h1>" + this.currentBet + "</h1>");
+      $('.current-bet').html("Current Bet: " + this.currentBet);
     }
   }
 }
