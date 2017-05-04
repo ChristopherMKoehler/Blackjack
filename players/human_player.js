@@ -23,6 +23,11 @@ class HumanPlayer extends Player {
     $('.chip-count').html("Total Chips: " + this.chipCount);
   }
 
+  resetCurrentBet() {
+    this.currentBet = 0;
+    $('.current-bet').html("Current Bet: " + this.currentBet);
+  }
+
   setCurrentBet(currentBet) {
     if(this.chipCount - (this.currentBet + currentBet) < 0) {
       throw new Error("Not enough funds!")

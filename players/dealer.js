@@ -16,9 +16,6 @@ class Dealer extends Player {
     this.receiveCard(secondCard);
   }
 
-  showAll() {
-    
-  }
 
   makeMove() {
     while(this.getTotal() <= 16) {
