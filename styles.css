@@ -17,3 +17,7 @@ img {
   flex-direction: row;
   align-items: center;
 }
+
+.end-game {
+  display: inline-grid;
+}
