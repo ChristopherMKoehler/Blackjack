@@ -171,7 +171,9 @@ class Deck {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cards_deck__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__players_player__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__players_dealer__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__players_human_player__ = __webpack_require__(5);
+
 
 
 
@@ -179,13 +181,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 window.Card = __WEBPACK_IMPORTED_MODULE_0__cards_card__["a" /* default */];
 window.Deck = __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */];
 
-$(document).ready(function() {
-  let deck = new __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */]();
-  let player = new __WEBPACK_IMPORTED_MODULE_2__players_player__["a" /* default */]();
 
-  player.receiveCard(deck.draw());
-  player.receiveCard(deck.draw());
-  window.player = player;
+$(document).ready(function() {
+  let doneBetting = false;
+
+  $('.add-bet').on("click", (e) => {
+    player.setCurrentBet(parseInt(e.currentTarget.value));
+  })
+
+  $('.done-betting').on("click", () => {
+    $('.add-bet').hide();
+    $('.done-betting').hide();
+    doneBetting = true;
+  })
+
+  let deck = new __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */]();
+  let dealer = new __WEBPACK_IMPORTED_MODULE_2__players_dealer__["a" /* default */](deck);
+  let player = new __WEBPACK_IMPORTED_MODULE_3__players_human_player__["a" /* default */](deck);
+  dealer.makeMove();
 });
 
 
@@ -198,19 +211,20 @@ $(document).ready(function() {
 
 
 class Player {
-  constructor() {
+  constructor(playerStr) {
     this.hand = [];
+    this.playerStr = playerStr;
   }
 
   receiveCard(newCard) {
     this.hand.push(newCard);
-    $(".player-cards").append("<img src=./card_images/" + newCard.getImageUrl() + "></img>")
+    $("." + this.playerStr + "-cards").append("<img src=./card_images/" + newCard.getImageUrl() + "></img>")
   }
 
-  clearHand() {
+  clearHand(playerStr) {
     this.hand = [];
     this.containsAce = false;
-    $(".player-cards").clear();
+    $("." + this.playerStr + "-cards").clear();
   }
 
   getTotal() {
@@ -218,7 +232,7 @@ class Player {
     let aces = 0;
 
     points = this.hand.reduce((accum, card) => {
-      if (card.isAce) { aces++ };
+      if (card.isAce()) { aces++ };
       return accum + card.getValue();
     }, 0);
 
@@ -235,6 +249,68 @@ class Player {
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Player);
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(3);
+
+
+
+class Dealer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default */] {
+  constructor(deck) {
+    super("dealer");
+    this.deck = deck;
+  }
+
+  makeMove() {
+    while(this.getTotal() <= 16) {
+      this.receiveCard(this.deck.draw());
+    }
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Dealer);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(3);
+
+
+
+class HumanPlayer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default */] {
+  constructor(deck) {
+    super("player");
+    this.deck = deck;
+    this.chipCount = 2000;
+    this.currentBet = 0;
+  }
+
+  updateChipCount(win) {
+    this.chipCount += win ? this.currentBet : -1 * this.currentBet;
+    this.currentBet = 0;
+  }
+
+  setCurrentBet(currentBet) {
+    if(this.chipCount - (this.currentBet + currentBet) < 0) {
+      throw new Error("Not enough funds!")
+    } else {
+      this.currentBet += currentBet;
+      $('.current-bet').html("<h1>" + this.currentBet + "</h1>");
+    }
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (HumanPlayer);
 
 
 /***/ })
