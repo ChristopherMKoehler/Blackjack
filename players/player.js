@@ -51,7 +51,7 @@ class Player {
 
   canSplit() {
     if(this.hand.length === 2){
-      return this.hand[0].getValue() === this.hand[1].getValue();
+      return this.hand[0].value === this.hand[1].value;
     } else {
       return false;
     }
