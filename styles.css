@@ -21,3 +21,9 @@ img {
 .end-game {
   display: inline-grid;
 }
+
+.player-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
