@@ -8,13 +8,21 @@ class Player {
 
   receiveCard(newCard) {
     this.hand.push(newCard);
-    $("." + this.playerStr + "-cards").append("<img src=./card_images/" + newCard.getImageUrl() + "></img>")
+    let id = newCard.faceUp ? "faceup" : "facedown";
+    if (newCard.faceUp){
+      $("." + this.playerStr + "-cards").append("<img id=" + id + " src=./card_images/" + newCard.getImageUrl() + "></img>");
+    } else {
+      $("." + this.playerStr + "-cards").append(
+      "<div id=card><div class=front><img src=./card_images/facedown.png></img> </div> <div class=back><img src=./card_images/" + newCard.getImageUrl() + "></img></div></div>"
+      );
+    }
+
   }
 
   clearHand(playerStr) {
     this.hand = [];
     this.containsAce = false;
-    $("." + this.playerStr + "-cards").clear();
+    $("." + this.playerStr + "-cards").html("");
   }
 
   getTotal() {
@@ -35,6 +43,10 @@ class Player {
 
   busted() {
     return this.getTotal() > 21;
+  }
+
+  blackjack() {
+    return this.getTotal() === 21;
   }
 }
 

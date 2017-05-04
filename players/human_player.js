@@ -9,9 +9,18 @@ class HumanPlayer extends Player {
     this.currentBet = 0;
   }
 
+  resetChipCount() {
+    this.chipCount = 2000;
+    this.currentBet = 0;
+    $('.current-bet').html("Current Bet: " + this.currentBet);
+    $('.chip-count').html("Total Chips: " + this.chipCount);
+  }
+
   updateChipCount(win) {
     this.chipCount += win ? this.currentBet : -1 * this.currentBet;
     this.currentBet = 0;
+    $('.current-bet').html("Current Bet: " + this.currentBet);
+    $('.chip-count').html("Total Chips: " + this.chipCount);
   }
 
   setCurrentBet(currentBet) {
@@ -19,7 +28,7 @@ class HumanPlayer extends Player {
       throw new Error("Not enough funds!")
     } else {
       this.currentBet += currentBet;
-      $('.current-bet').html("<h1>" + this.currentBet + "</h1>");
+      $('.current-bet').html("Current Bet: " + this.currentBet);
     }
   }
 }

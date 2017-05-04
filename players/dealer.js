@@ -7,6 +7,19 @@ class Dealer extends Player {
     this.deck = deck;
   }
 
+  makeStartingMove() {
+    let firstCard = this.deck.draw();
+    let secondCard = this.deck.draw();
+
+    firstCard.faceUp = false;
+    this.receiveCard(firstCard);
+    this.receiveCard(secondCard);
+  }
+
+  showAll() {
+    
+  }
+
   makeMove() {
     while(this.getTotal() <= 16) {
       this.receiveCard(this.deck.draw());
