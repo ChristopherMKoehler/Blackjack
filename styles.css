@@ -8,6 +8,19 @@
   position: relative;
 }
 
+button {
+  font-size: 16px;
+  font-family: verdana;
+  border: none;
+  background: lightgray;
+  border-radius: 10px;
+}
+
+button:hover {
+  cursor: pointer;
+  background: gray;
+}
+
 img {
   width: 120px;
   margin: 10px;
