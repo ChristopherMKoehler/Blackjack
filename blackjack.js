@@ -3,11 +3,6 @@ import Deck from './cards/deck';
 import Dealer from './players/dealer';
 import HumanPlayer from './players/human_player';
 
-//get the bet
-//deal cards 1 face down, 1 face up for dealer, both face up for player
-//take input to hit, stand or double down
-//run through dealer cards
-//display winner
 let deck = new Deck();
 let dealer = new Dealer(deck);
 let player = new HumanPlayer(deck);
@@ -49,6 +44,17 @@ const playAgain = () => {
 const declareWinner = () => {
   let playerTotal = player.getTotal();
   let dealerTotal = dealer.getTotal();
+
+  if(playerTotal > dealerTotal || dealer.busted()) {
+    handleWin(player);
+  } else if(playerTotal === dealerTotal) {
+    player.resetCurrentBet()
+    $('.winner').html("You tied!");
+    $('.play-action').hide();
+    $('.end-game').show();
+  } else {
+    handleWin(dealer);
+  }
 }
 
 $(document).ready(function() {
@@ -82,12 +88,13 @@ $(document).ready(function() {
     if(e.currentTarget.value === "hit") {
       player.receiveCard(deck.draw());
       if(player.busted()) {
+        $("#card").flip(true);
         handleWin(dealer);
       } else if(player.blackjack()) {
         handleWin(player);
       }
     } else {
-      $("#card").flip();
+      $("#card").flip(true);
       dealer.makeMove();
       declareWinner();
     }
