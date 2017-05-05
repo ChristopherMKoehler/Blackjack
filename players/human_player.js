@@ -16,8 +16,8 @@ class HumanPlayer extends Player {
     $('.chip-count').html("Total Chips: " + this.chipCount);
   }
 
-  updateChipCount(win) {
-    this.chipCount += win ? this.currentBet : -1 * this.currentBet;
+  updateChipCount(diff) {
+    this.chipCount += diff;
     this.currentBet = 0;
     $('.current-bet').html("Current Bet: " + this.currentBet);
     $('.chip-count').html("Total Chips: " + this.chipCount);
@@ -37,19 +37,13 @@ class HumanPlayer extends Player {
     }
   }
 
-  canSplit() {
-    if(this.hand.length === 2){
-      return this.hand[0].value === this.hand[1].value;
-    } else {
-      return false;
-    }
+  canSplit(idx = 0) {
+    return this.hand[idx][0].value === this.hand[idx][1].value;
   }
 
-  canDoubleDown() {
-    if(this.hand.length === 2 && this.getTotal() <= 11) {
+  canDoubleDown(idx = 0) {
+    if(this.getTotal(idx) <= 11) {
       return this.chipCount - (2 * this.currentBet) >= 0;
-    } else {
-      return false;
     }
   }
 

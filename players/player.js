@@ -2,12 +2,12 @@ import Card from '../cards/card';
 
 class Player {
   constructor(playerStr) {
-    this.hand = [];
+    this.hand = [[]];
     this.playerStr = playerStr;
   }
 
-  receiveCard(newCard) {
-    this.hand.push(newCard);
+  receiveCard(newCard, idx = 0) {
+    this.hand[idx].push(newCard);
     let id = newCard.faceUp ? "faceup" : "facedown";
     if (newCard.faceUp){
       $("." + this.playerStr + "-cards").append("<img id=" + id + " src=./card_images/" + newCard.getImageUrl() + "></img>");
@@ -20,16 +20,16 @@ class Player {
   }
 
   clearHand(playerStr) {
-    this.hand = [];
+    this.hand = [[]];
     this.containsAce = false;
     $("." + this.playerStr + "-cards").html("");
   }
 
-  getTotal() {
+  getTotal(idx = 0) {
     let points = 0;
     let aces = 0;
 
-    points = this.hand.reduce((accum, card) => {
+    points = this.hand[idx].reduce((accum, card) => {
       if (card.isAce()) { aces++ };
       return accum + card.getValue();
     }, 0);
@@ -38,15 +38,15 @@ class Player {
       if (points > 21) { points -= 10 };
     }
 
-    return points;
+    return points > 21 ? -1 : points;
   }
 
-  busted() {
-    return this.getTotal() > 21;
+  busted(idx = 0) {
+    return this.getTotal(idx) === -1;
   }
 
-  blackjack() {
-    return this.getTotal() === 21;
+  blackjack(idx = 0) {
+    return this.getTotal(idx) === 21;
   }
 }
 

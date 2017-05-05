@@ -27,7 +27,7 @@ const hideBetInput = () => {
 
 const handleWin = (winner) => {
   $("#dd").hide();
-  player.updateChipCount(winner === player);
+
   $('.winner').html(winner === player ? "You win!" : "You Lose!");
   $('.play-action').hide();
   $('.split').remove();
@@ -44,14 +44,25 @@ const playAgain = () => {
 }
 
 const declareWinner = () => {
-  let playerTotal = player.getTotal();
+  $("#dd").hide();
+  let netChipDifference = 0;
+  let idx = 0;
   let dealerTotal = dealer.getTotal();
+  player.hand.forEach((hand) => {
+    if(player.getTotal(idx) > dealer.getTotal()) {
+      netChipDifference += player.currentBet;
+    } else if (player.getTotal(idx) < dealer.getTotal()) {
+      netChipDifference -= player.currentBet;
+    }
+  })
 
-  if(playerTotal > dealerTotal || dealer.busted()) {
+  player.updateChipCount(netChipDifference);
+
+  if(netChipDifference > 0) {
     handleWin(player);
-  } else if(playerTotal === dealerTotal) {
+  } else if(netChipDifference === 0) {
     player.resetCurrentBet()
-    $('.winner').html("You tied!");
+    $('.winner').html("You broke even!");
     $('.play-action').hide();
     $('.end-game').show();
   } else {
@@ -86,7 +97,7 @@ $(document).ready(function() {
     player.receiveCard(deck.draw());
 
     if(player.blackjack()) {
-      handleWin(player)
+      declareWinner();
     } else if(player.canSplit()) {
       $('.player-actions').append("<button class=split>Split</button>");
     } else if(player.canDoubleDown()) {
@@ -103,9 +114,9 @@ $(document).ready(function() {
       player.receiveCard(deck.draw());
       if(player.busted()) {
         $("#card").flip(true);
-        handleWin(dealer);
+        declareWinner();
       } else if(player.blackjack()) {
-        handleWin(player);
+        declareWinner();
       }
     } else {
       $("#card").flip(true);
