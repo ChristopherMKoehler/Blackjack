@@ -274,6 +274,7 @@ $(document).ready(function() {
 
   $('.play-action').on("click", (e) => {
     $("#dd").hide();
+    $(".split").hide();
     if(e.currentTarget.value === "hit") {
       player.receiveCard(deck.draw());
       if(player.busted()) {
