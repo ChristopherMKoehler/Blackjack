@@ -203,7 +203,7 @@ const hideBetInput = () => {
 
 const handleWin = (winner) => {
   $("#dd").hide();
-  player.updateChipCount(winner === player);
+
   $('.winner').html(winner === player ? "You win!" : "You Lose!");
   $('.play-action').hide();
   $('.split').remove();
@@ -220,14 +220,25 @@ const playAgain = () => {
 }
 
 const declareWinner = () => {
-  let playerTotal = player.getTotal();
+  $("#dd").hide();
+  let netChipDifference = 0;
+  let idx = 0;
   let dealerTotal = dealer.getTotal();
+  player.hand.forEach((hand) => {
+    if(player.getTotal(idx) > dealer.getTotal()) {
+      netChipDifference += player.currentBet;
+    } else if (player.getTotal(idx) < dealer.getTotal()) {
+      netChipDifference -= player.currentBet;
+    }
+  })
 
-  if(playerTotal > dealerTotal || dealer.busted()) {
+  player.updateChipCount(netChipDifference);
+
+  if(netChipDifference > 0) {
     handleWin(player);
-  } else if(playerTotal === dealerTotal) {
+  } else if(netChipDifference === 0) {
     player.resetCurrentBet()
-    $('.winner').html("You tied!");
+    $('.winner').html("You broke even!");
     $('.play-action').hide();
     $('.end-game').show();
   } else {
@@ -262,7 +273,7 @@ $(document).ready(function() {
     player.receiveCard(deck.draw());
 
     if(player.blackjack()) {
-      handleWin(player)
+      declareWinner();
     } else if(player.canSplit()) {
       $('.player-actions').append("<button class=split>Split</button>");
     } else if(player.canDoubleDown()) {
@@ -279,9 +290,9 @@ $(document).ready(function() {
       player.receiveCard(deck.draw());
       if(player.busted()) {
         $("#card").flip(true);
-        handleWin(dealer);
+        declareWinner();
       } else if(player.blackjack()) {
-        handleWin(player);
+        declareWinner();
       }
     } else {
       $("#card").flip(true);
@@ -312,12 +323,12 @@ $(document).ready(function() {
 
 class Player {
   constructor(playerStr) {
-    this.hand = [];
+    this.hand = [[]];
     this.playerStr = playerStr;
   }
 
-  receiveCard(newCard) {
-    this.hand.push(newCard);
+  receiveCard(newCard, idx = 0) {
+    this.hand[idx].push(newCard);
     let id = newCard.faceUp ? "faceup" : "facedown";
     if (newCard.faceUp){
       $("." + this.playerStr + "-cards").append("<img id=" + id + " src=./card_images/" + newCard.getImageUrl() + "></img>");
@@ -330,16 +341,16 @@ class Player {
   }
 
   clearHand(playerStr) {
-    this.hand = [];
+    this.hand = [[]];
     this.containsAce = false;
     $("." + this.playerStr + "-cards").html("");
   }
 
-  getTotal() {
+  getTotal(idx = 0) {
     let points = 0;
     let aces = 0;
 
-    points = this.hand.reduce((accum, card) => {
+    points = this.hand[idx].reduce((accum, card) => {
       if (card.isAce()) { aces++ };
       return accum + card.getValue();
     }, 0);
@@ -348,15 +359,15 @@ class Player {
       if (points > 21) { points -= 10 };
     }
 
-    return points;
+    return points > 21 ? -1 : points;
   }
 
-  busted() {
-    return this.getTotal() > 21;
+  busted(idx = 0) {
+    return this.getTotal(idx) === -1;
   }
 
-  blackjack() {
-    return this.getTotal() === 21;
+  blackjack(idx = 0) {
+    return this.getTotal(idx) === 21;
   }
 }
 
@@ -390,7 +401,7 @@ class Dealer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default */] {
 
 
   makeMove() {
-    while(this.getTotal() <= 16) {
+    while(this.getTotal() <= 16 && this.getTotal() != -1) {
       this.receiveCard(this.deck.draw());
     }
   }
@@ -424,8 +435,8 @@ class HumanPlayer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default *
     $('.chip-count').html("Total Chips: " + this.chipCount);
   }
 
-  updateChipCount(win) {
-    this.chipCount += win ? this.currentBet : -1 * this.currentBet;
+  updateChipCount(diff) {
+    this.chipCount += diff;
     this.currentBet = 0;
     $('.current-bet').html("Current Bet: " + this.currentBet);
     $('.chip-count').html("Total Chips: " + this.chipCount);
@@ -445,19 +456,13 @@ class HumanPlayer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default *
     }
   }
 
-  canSplit() {
-    if(this.hand.length === 2){
-      return this.hand[0].value === this.hand[1].value;
-    } else {
-      return false;
-    }
+  canSplit(idx = 0) {
+    return this.hand[idx][0].value === this.hand[idx][1].value;
   }
 
-  canDoubleDown() {
-    if(this.hand.length === 2 && this.getTotal() <= 11) {
+  canDoubleDown(idx = 0) {
+    if(this.getTotal(idx) <= 11) {
       return this.chipCount - (2 * this.currentBet) >= 0;
-    } else {
-      return false;
     }
   }
 

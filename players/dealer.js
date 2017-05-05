@@ -18,7 +18,7 @@ class Dealer extends Player {
 
 
   makeMove() {
-    while(this.getTotal() <= 16) {
+    while(this.getTotal() <= 16 && this.getTotal() != -1) {
       this.receiveCard(this.deck.draw());
     }
   }
