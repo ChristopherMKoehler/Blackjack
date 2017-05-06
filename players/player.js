@@ -10,7 +10,15 @@ class Player {
     this.hand[idx].push(newCard);
     let id = newCard.faceUp ? "faceup" : "facedown";
     if (newCard.faceUp){
-      $("." + this.playerStr + "-cards").append("<img id=" + id + " src=./card_images/" + newCard.getImageUrl() + "></img>");
+      if(this.playerStr === "player") {
+        $(".player-cards").html("");
+        this.hand.forEach((hand) => {
+          $(".player-cards").append("<div class=hand></div>");
+          hand.forEach((card) => $(".player-cards div:last-child").append("<img id=" + id + " src=./card_images/" + card.getImageUrl() + "></img>"));
+        })
+      } else {
+        $("." + this.playerStr + "-cards").append("<img id=" + id + " src=./card_images/" + newCard.getImageUrl() + "></img>");
+      }
     } else {
       $("." + this.playerStr + "-cards").append(
       "<div id=card><div class=front><img src=./card_images/facedown.png></img> </div> <div class=back><img src=./card_images/" + newCard.getImageUrl() + "></img></div></div>"

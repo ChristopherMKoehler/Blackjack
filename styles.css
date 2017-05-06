@@ -22,7 +22,7 @@ button:hover {
 }
 
 img {
-  width: 120px;
+  width: 100px;
   margin: 10px;
 }
 
@@ -81,4 +81,12 @@ img {
   font-family: 'Shrikhand', cursive;
   font-weight: bold;
   font-size: 100px;
+}
+
+.player-cards {
+  display: flex;
+}
+
+.hand {
+  padding: 20px;
 }

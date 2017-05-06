@@ -50,6 +50,12 @@ class HumanPlayer extends Player {
   doubleCurrentBet() {
     this.setCurrentBet(this.currentBet);
   }
+
+  handleSplit(idx = 0) {
+    this.hand.push([this.hand[idx].pop()]);
+    this.receiveCard(this.deck.draw(), idx);
+    this.receiveCard(this.deck.draw(), this.hand.length - 1);
+  }
 }
 
 export default HumanPlayer;

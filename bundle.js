@@ -183,10 +183,26 @@ let deck = new __WEBPACK_IMPORTED_MODULE_1__cards_deck__["a" /* default */]();
 let dealer = new __WEBPACK_IMPORTED_MODULE_2__players_dealer__["a" /* default */](deck);
 let player = new __WEBPACK_IMPORTED_MODULE_3__players_human_player__["a" /* default */](deck);
 let winner = null;
+let currentHandIndex = 0;
+let dd = {};
 
 const resetHands = () => {
   dealer.clearHand("dealer");
   player.clearHand("player");
+}
+
+const showCorrectButtons = () => {
+  $(".split, #dd").hide();
+  if(player.canSplit(currentHandIndex)) {
+    $(".split").show();
+  }
+  if(player.canDoubleDown(currentHandIndex)) {
+    $("#dd").show();
+  }
+}
+
+const isLastHand = () => {
+  return currentHandIndex == player.hand.length - 1;
 }
 
 const showBetInput = () => {
@@ -206,7 +222,7 @@ const handleWin = (winner) => {
 
   $('.winner').html(winner === player ? "You win!" : "You Lose!");
   $('.play-action').hide();
-  $('.split').remove();
+  $('.split').hide();
   $('.end-game').show();
 }
 
@@ -221,14 +237,16 @@ const playAgain = () => {
 
 const declareWinner = () => {
   $("#dd").hide();
+  $(".split").hide();
   let netChipDifference = 0;
-  let idx = 0;
   let dealerTotal = dealer.getTotal();
-  player.hand.forEach((hand) => {
+  let currentBet;
+  player.hand.forEach((hand, idx) => {
+    currentBet = dd[idx] ? player.currentBet * 2 : player.currentBet;
     if(player.getTotal(idx) > dealer.getTotal()) {
-      netChipDifference += player.currentBet;
+      netChipDifference += currentBet;
     } else if (player.getTotal(idx) < dealer.getTotal()) {
-      netChipDifference -= player.currentBet;
+      netChipDifference -= currentBet;
     }
   })
 
@@ -246,10 +264,11 @@ const declareWinner = () => {
   }
 }
 
-$(document).ready(function() {
+$(function() {
   $('#dd').hide();
   $('.end-game').hide();
   $('.play-action').hide();
+  // $(".split").hide();
 
   $('.add-bet').on("click", (e) => {
     try{
@@ -274,9 +293,9 @@ $(document).ready(function() {
 
     if(player.blackjack()) {
       declareWinner();
-    } else if(player.canSplit()) {
-      $('.player-actions').append("<button class=split>Split</button>");
-    } else if(player.canDoubleDown()) {
+    } else if(player.canSplit(currentHandIndex)) {
+      $(".split").show();
+    } else if(player.canDoubleDown(currentHandIndex)) {
       $('#dd').show();
     } else {
       $("#dd").hide();
@@ -287,29 +306,56 @@ $(document).ready(function() {
     $("#dd").hide();
     $(".split").hide();
     if(e.currentTarget.value === "hit") {
-      player.receiveCard(deck.draw());
-      if(player.busted()) {
-        $("#card").flip(true);
-        declareWinner();
+      player.receiveCard(deck.draw(), currentHandIndex);
+      if(player.busted(currentHandIndex)) {
+        if(isLastHand()){
+          $("#card").flip(true);
+          declareWinner();
+        } else {
+          currentHandIndex++;
+          showCorrectButtons();
+        }
       } else if(player.blackjack()) {
-        declareWinner();
+        if(isLastHand()) {
+          declareWinner();
+        } else {
+           currentHandIndex++;
+           showCorrectButtons();
+        }
       }
     } else {
-      $("#card").flip(true);
-      dealer.makeMove();
-      declareWinner();
+      if(isLastHand()) {
+        $("#card").flip(true);
+        dealer.makeMove();
+        declareWinner();
+      } else {
+        currentHandIndex++;
+        showCorrectButtons();
+      }
     }
   })
 
   $('.play-again').on("click", () => playAgain());
 
   $("#dd").on("click", () => {
-    player.receiveCard(deck.draw());
-    player.doubleCurrentBet();
-    $("#card").flip(true);
-    dealer.makeMove();
-    declareWinner();
+    player.receiveCard(deck.draw(), currentHandIndex);
+    dd[currentHandIndex] = true;
+
+    if(isLastHand()) {
+      $("#card").flip(true);
+      dealer.makeMove();
+      declareWinner();
+    } else {
+      currentHandIndex++;
+      showCorrectButtons();
+    }
+
   })
+
+  $(".split").on("click", () => {
+    player.handleSplit(currentHandIndex);
+    showCorrectButtons();
+  });
 });
 
 
@@ -331,7 +377,15 @@ class Player {
     this.hand[idx].push(newCard);
     let id = newCard.faceUp ? "faceup" : "facedown";
     if (newCard.faceUp){
-      $("." + this.playerStr + "-cards").append("<img id=" + id + " src=./card_images/" + newCard.getImageUrl() + "></img>");
+      if(this.playerStr === "player") {
+        $(".player-cards").html("");
+        this.hand.forEach((hand) => {
+          $(".player-cards").append("<div class=hand></div>");
+          hand.forEach((card) => $(".player-cards div:last-child").append("<img id=" + id + " src=./card_images/" + card.getImageUrl() + "></img>"));
+        })
+      } else {
+        $("." + this.playerStr + "-cards").append("<img id=" + id + " src=./card_images/" + newCard.getImageUrl() + "></img>");
+      }
     } else {
       $("." + this.playerStr + "-cards").append(
       "<div id=card><div class=front><img src=./card_images/facedown.png></img> </div> <div class=back><img src=./card_images/" + newCard.getImageUrl() + "></img></div></div>"
@@ -468,6 +522,12 @@ class HumanPlayer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default *
 
   doubleCurrentBet() {
     this.setCurrentBet(this.currentBet);
+  }
+
+  handleSplit(idx = 0) {
+    this.hand.push([this.hand[idx].pop()]);
+    this.receiveCard(this.deck.draw(), idx);
+    this.receiveCard(this.deck.draw(), this.hand.length - 1);
   }
 }
 
