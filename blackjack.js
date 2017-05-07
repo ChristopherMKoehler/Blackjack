@@ -141,7 +141,7 @@ $(function() {
           $("#card").flip(true);
           declareWinner();
         } else {
-          $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("");
+          $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "");
           currentHandIndex++;
           $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
           showCorrectButtons();
@@ -156,6 +156,9 @@ $(function() {
           $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
            showCorrectButtons();
         }
+      } else {
+          $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
+          showCorrectButtons();
       }
     } else {
       if(isLastHand()) {
