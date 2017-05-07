@@ -92,7 +92,7 @@ $(function() {
   $('#dd').hide();
   $('.end-game').hide();
   $('.play-action').hide();
-  // $(".split").hide();
+  $(".split").hide();
 
   $('.add-bet').on("click", (e) => {
     try{
