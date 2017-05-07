@@ -271,12 +271,16 @@ $(function() {
   $(".split").hide();
 
   $('.add-bet').on("click", (e) => {
-    try{
-      player.setCurrentBet(parseInt(e.currentTarget.value));
-    } catch (e) {
-      $('.bet-errors').html(e.message + "");
-      $('.bet-errors').show();
-      $('.bet-errors').fadeOut(1000);
+    if(e.target.value === "clear") {
+      player.resetCurrentBet();
+    } else {
+      try{
+        player.setCurrentBet(parseInt(e.currentTarget.value));
+      } catch (e) {
+        $('.bet-errors').html(e.message + "");
+        $('.bet-errors').show();
+        $('.bet-errors').fadeOut(1000);
+      }
     }
   })
 
