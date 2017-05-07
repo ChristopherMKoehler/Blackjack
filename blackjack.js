@@ -9,6 +9,7 @@ let player = new HumanPlayer(deck);
 let winner = null;
 let currentHandIndex = 0;
 let dd = {};
+let splitting = false;
 
 const resetHands = () => {
   dealer.clearHand("dealer");
@@ -43,6 +44,7 @@ const hideBetInput = () => {
 
 const handleWin = (winner) => {
   $("#dd").hide();
+  splitting = false;
 
   $('.winner').html(winner === player ? "You win!" : "You Lose!");
   $('.play-action').hide();
@@ -74,6 +76,7 @@ const declareWinner = () => {
     }
   })
 
+  dd = {};
   player.updateChipCount(netChipDifference);
 
   if(netChipDifference > 0) {
@@ -156,7 +159,7 @@ $(function() {
           $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
            showCorrectButtons();
         }
-      } else {
+      } else if(splitting) {
           $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
           showCorrectButtons();
       }
@@ -198,6 +201,7 @@ $(function() {
 
   $(".split").on("click", () => {
     player.handleSplit(currentHandIndex);
+    splitting = true;
     $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
     showCorrectButtons();
   });
