@@ -9,11 +9,13 @@
 }
 
 button {
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: bold;
   font-family: verdana;
   border: none;
   background: lightgray;
-  border-radius: 10px;
+  border-radius: 3px;
+  padding: 10px;
 }
 
 button:hover {
@@ -47,7 +49,7 @@ img {
 
 .player-options {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
 }
 
@@ -90,4 +92,11 @@ img {
 .hand {
   margin-right: 20px;
   border-radius: 3px;
+}
+
+.bet-errors {
+  margin-right: 10px;
+  font-family: verdana;
+  color: red;
+  font-size: 18px;
 }
