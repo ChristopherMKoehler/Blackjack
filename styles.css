@@ -88,5 +88,6 @@ img {
 }
 
 .hand {
-  padding: 20px;
+  margin-right: 20px;
+  border-radius: 3px;
 }

@@ -133,27 +133,37 @@ $(function() {
       player.receiveCard(deck.draw(), currentHandIndex);
       if(player.busted(currentHandIndex)) {
         if(isLastHand()){
+          $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "");
           $("#card").flip(true);
           declareWinner();
         } else {
+          $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("");
           currentHandIndex++;
+          $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
           showCorrectButtons();
         }
       } else if(player.blackjack()) {
         if(isLastHand()) {
+          $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "");
           declareWinner();
         } else {
-           currentHandIndex++;
+          $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "");
+          currentHandIndex++;
+          $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
            showCorrectButtons();
         }
       }
     } else {
       if(isLastHand()) {
+        $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "");
         $("#card").flip(true);
         dealer.makeMove();
         declareWinner();
       } else {
+        $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "");
         currentHandIndex++;
+        $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
+
         showCorrectButtons();
       }
     }
@@ -166,11 +176,14 @@ $(function() {
     dd[currentHandIndex] = true;
 
     if(isLastHand()) {
+      $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "");
       $("#card").flip(true);
       dealer.makeMove();
       declareWinner();
     } else {
+      $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "");
       currentHandIndex++;
+      $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
       showCorrectButtons();
     }
 
@@ -178,6 +191,7 @@ $(function() {
 
   $(".split").on("click", () => {
     player.handleSplit(currentHandIndex);
+    $(".player-cards div:nth-child(" + (currentHandIndex + 1) +")").css("background-color", "#16b759");
     showCorrectButtons();
   });
 });
