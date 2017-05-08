@@ -5,7 +5,7 @@ It is written in JavaScript and uses jQuery for DOM manipulation.
 
 ### Instructions
 
-[button-image] (./screenshots/bet-buttons.PNG)
+![button-image] (./screenshots/bet-buttons.PNG)
 
 1) Place your bet using the buttons at the bottom-right of the screen (shown above). Each player starts the game with a total of 2000 chips. The user can press a button multiple times to add that amount that many times to their current bet. There is also a clear bet button to reset your current bet back to zero if you misclicked.
 
