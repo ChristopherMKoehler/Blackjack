@@ -73,7 +73,10 @@ if(this.playerStr === "player") {
   $(".player-cards").html("");
   this.hand.forEach((hand) => {
     $(".player-cards").append("<div class=hand></div>");
-    hand.forEach((card) => $(".player-cards div:last-child").append("<img id=" + id + " src=./card_images/" + card.getImageUrl() + "></img>"));
+    hand.forEach((card) =>
+      $(".player-cards div:last-child")
+        .append("<img id=" + id + " src=./card_images/" + card.getImageUrl() + "></img>")
+    );
   })
 }
 ```
