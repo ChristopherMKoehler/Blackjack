@@ -1,5 +1,7 @@
 ## Blackjack
+[Blackjack live][heroku]
 
+[heroku]: http://www.christopherkoehler.me/Blackjack
 This is an application that allow the user to play the classic card game, Blackjack.
 It is written in JavaScript and uses jQuery for DOM manipulation.
 
