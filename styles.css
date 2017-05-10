@@ -29,6 +29,7 @@ img {
 }
 
 .dealer-cards {
+  margin-top: 88px;
   display: flex;
   flex-direction: row;
   align-items: center;
