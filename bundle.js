@@ -449,6 +449,10 @@ $(function() {
   $('.play-action').hide();
   $(".split").hide();
 
+  $("#close").on("click", () => {
+    $(".instructions").hide();
+  });
+
   $('.add-bet').on("click", (e) => {
     if(e.target.value === "clear") {
       player.resetCurrentBet();
@@ -470,7 +474,6 @@ $(function() {
     $("#card").flip({
       trigger: "manual"
     });
-
     player.receiveCard(deck.draw());
     player.receiveCard(deck.draw());
 

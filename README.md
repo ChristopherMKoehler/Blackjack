@@ -1,5 +1,10 @@
 ## Blackjack
 [Blackjack live][heroku]
+<<<<<<< HEAD
+=======
+
+[heroku]: http://www.christopherkoehler.me/Blackjack
+>>>>>>> gh-pages
 
 [heroku]: http://www.christopherkoehler.me/Blackjack
 This is an application that allow the user to play the classic card game, Blackjack.
