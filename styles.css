@@ -100,3 +100,33 @@ img {
   color: red;
   font-size: 18px;
 }
+
+.instructions {
+  background-color: white;
+  width: 500px;
+  border: 1px solid black;
+  border-radius: 5px;
+  z-index: 100;
+  position: absolute;
+  top: 27%;
+  left: 33%;
+  padding: 20px;
+  font-family: verdana;
+}
+
+.inst-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+}
+
+.instructions li {
+  margin-bottom: 10px;
+}
+
+#close:hover {
+  cursor: pointer;
+  color: gray;
+}

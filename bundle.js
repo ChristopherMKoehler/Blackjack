@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,107 +71,9 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const suits = ["spades", "clubs", "diamonds", "hearts"];
-const values = {
-  "2": 2,
-  "3": 3,
-  "4": 4,
-  "5": 5,
-  "6": 6,
-  "7": 7,
-  "8": 8,
-  "9": 9,
-  "10": 10,
-  "jack" : 10,
-  "queen": 10,
-  "king": 10,
-  "ace": 11
-}
-
-class Card {
-  constructor(value, suit) {
-    this.value = value;
-    this.suit = suit;
-    this.faceUp = true;
-  }
-
-  static generateDeck() {
-    let cardArray = [];
-    suits.forEach((suit) => {
-      Object.keys(values).forEach((value) => cardArray.push(new Card(value, suit)))
-    })
-    return Card.shuffle(cardArray);
-  }
-
-  static shuffle(cardArray) {
-    let x, j;
-    for(let i = cardArray.length; i > 0; i--) {
-      let j = Math.floor(Math.random() * i);
-      let x = cardArray[i - 1];
-      cardArray[i - 1] = cardArray[j];
-      cardArray[j] = x;
-    }
-    return cardArray;
-  }
-
-  getValue() {
-    return values[this.value];
-  }
-
-  getSuit() {
-    return this.suit;
-  }
-
-  getImageUrl() {
-    return this.value + "_of_" + this.getSuit() + ".png";
-  }
-
-  isAce() {
-    return this.value === "ace";
-  }
-}
-
-window.Card = Card;
-
-/* harmony default export */ __webpack_exports__["a"] = (Card);
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card__ = __webpack_require__(0);
-
-
-class Deck {
-  constructor(deck = null) {
-    this.cards = deck || __WEBPACK_IMPORTED_MODULE_0__card__["a" /* default */].generateDeck();
-  }
-
-  draw() {
-    if(this.cards.length === 0) {
-      this.reset();
-    }
-    return this.cards.pop();
-  }
-
-  reset() {
-    this.cards = __WEBPACK_IMPORTED_MODULE_0__card__["a" /* default */].generateDeck();
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (Deck);
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cards_deck__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cards_deck__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__players_dealer__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__players_human_player__ = __webpack_require__(5);
 
@@ -273,6 +175,10 @@ $(function() {
   $('.play-action').hide();
   $(".split").hide();
 
+  $("#close").on("click", () => {
+    $(".instructions").hide();
+  });
+
   $('.add-bet').on("click", (e) => {
     if(e.target.value === "clear") {
       player.resetCurrentBet();
@@ -294,7 +200,6 @@ $(function() {
     $("#card").flip({
       trigger: "manual"
     });
-
     player.receiveCard(deck.draw());
     player.receiveCard(deck.draw());
 
@@ -385,11 +290,81 @@ $(function() {
 
 
 /***/ }),
-/* 3 */
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(0);
+const suits = ["spades", "clubs", "diamonds", "hearts"];
+const values = {
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "6": 6,
+  "7": 7,
+  "8": 8,
+  "9": 9,
+  "10": 10,
+  "jack" : 10,
+  "queen": 10,
+  "king": 10,
+  "ace": 11
+}
+
+class Card {
+  constructor(value, suit) {
+    this.value = value;
+    this.suit = suit;
+    this.faceUp = true;
+  }
+
+  static generateDeck() {
+    let cardArray = [];
+    suits.forEach((suit) => {
+      Object.keys(values).forEach((value) => cardArray.push(new Card(value, suit)))
+    })
+    return Card.shuffle(cardArray);
+  }
+
+  static shuffle(cardArray) {
+    let x, j;
+    for(let i = cardArray.length; i > 0; i--) {
+      let j = Math.floor(Math.random() * i);
+      let x = cardArray[i - 1];
+      cardArray[i - 1] = cardArray[j];
+      cardArray[j] = x;
+    }
+    return cardArray;
+  }
+
+  getValue() {
+    return values[this.value];
+  }
+
+  getSuit() {
+    return this.suit;
+  }
+
+  getImageUrl() {
+    return this.value + "_of_" + this.getSuit() + ".png";
+  }
+
+  isAce() {
+    return this.value === "ace";
+  }
+}
+
+window.Card = Card;
+
+/* harmony default export */ __webpack_exports__["a"] = (Card);
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(1);
 
 
 class Player {
@@ -454,12 +429,40 @@ class Player {
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__card__ = __webpack_require__(1);
+
+
+class Deck {
+  constructor(deck = null) {
+    this.cards = deck || __WEBPACK_IMPORTED_MODULE_0__card__["a" /* default */].generateDeck();
+  }
+
+  draw() {
+    if(this.cards.length === 0) {
+      this.reset();
+    }
+    return this.cards.pop();
+  }
+
+  reset() {
+    this.cards = __WEBPACK_IMPORTED_MODULE_0__card__["a" /* default */].generateDeck();
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Deck);
+
+
+/***/ }),
 /* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(2);
 
 
 
@@ -494,8 +497,8 @@ class Dealer extends __WEBPACK_IMPORTED_MODULE_1__player__["a" /* default */] {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__cards_card__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(2);
 
 
 
