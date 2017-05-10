@@ -447,7 +447,7 @@ $(function() {
   $('#dd').hide();
   $('.end-game').hide();
   $('.play-action').hide();
-  $(".split").show();
+  $(".split").hide();
 
   $('.add-bet').on("click", (e) => {
     if(e.target.value === "clear") {
