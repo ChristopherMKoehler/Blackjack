@@ -64,6 +64,7 @@ const playAgain = () => {
 const declareWinner = () => {
   $("#dd").hide();
   $(".split").hide();
+  currentHandIndex = 0;
   let netChipDifference = 0;
   let dealerTotal = dealer.getTotal();
   let currentBet;
