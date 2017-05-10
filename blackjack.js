@@ -64,6 +64,7 @@ const playAgain = () => {
 const declareWinner = () => {
   $("#dd").hide();
   $(".split").hide();
+  currentHandIndex = 0;
   let netChipDifference = 0;
   let dealerTotal = dealer.getTotal();
   let currentBet;
@@ -95,7 +96,7 @@ $(function() {
   $('#dd').hide();
   $('.end-game').hide();
   $('.play-action').hide();
-  $(".split").hide();
+  $(".split").show();
 
   $('.add-bet').on("click", (e) => {
     if(e.target.value === "clear") {
