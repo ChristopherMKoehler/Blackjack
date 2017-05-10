@@ -103,14 +103,14 @@ img {
 
 .instructions {
   background-color: white;
-  width: 500px;
+  width: 278px;
   border: 1px solid black;
   border-radius: 5px;
   z-index: 100;
   position: absolute;
-  top: 27%;
-  left: 33%;
-  padding: 20px;
+  top: 0;
+  right: 0;
+  padding: 15px;
   font-family: verdana;
 }
 
@@ -129,4 +129,20 @@ img {
 #close:hover {
   cursor: pointer;
   color: gray;
+}
+
+#finalize {
+  margin: 20px;
+  background: lightgreen;
+  width: 197px;
+}
+
+#finalize:hover {
+  background: aquamarine;
+}
+
+.instructions a {
+  color: rebeccapurple;
+  text-decoration: none;
+  font-size: larger;
 }
