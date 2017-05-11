@@ -53,6 +53,7 @@ img {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-right: 20px;
 }
 
 .cards-container {
@@ -134,7 +135,7 @@ img {
 }
 
 #finalize {
-  margin: 20px;
+  margin-left: 20px;
   background: lightgreen;
   width: 197px;
 }
@@ -147,4 +148,8 @@ img {
   color: rebeccapurple;
   text-decoration: none;
   font-size: larger;
+}
+
+.play-action, .split {
+  width: 100px;
 }
