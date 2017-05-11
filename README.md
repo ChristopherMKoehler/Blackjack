@@ -16,7 +16,7 @@ It is written in JavaScript and uses jQuery for DOM manipulation.
 
 2) You will be dealt two cards and the dealer, whose cards are at the top of the screen, will also be dealt two cards but one of them will be facedown. You will be offered the options to hit or stand. If you have enough chips you can either double down or split, which will double your bet. If your cards sum to less than 12, you can double down, which will give you one more card and allow the dealer to go. If you have two cards of the same value, say two tens, you will be given the option to split. This will create two hands, with each hand containing one of the tens from the original hand. The user will then be able to iterate through the hands with custom hand functionalty.
 
-3) After you are done with your hand, you busted (sum of cards > 21), or you hit Blackjack (sum of cards = 21), the dealer will flip his facedown card and draw until he hits a score over 16 or he busts.
+3) After you are done with your hand, you busted (sum of cards > 21), or you hit Blackjack (sum of cards = 21), the dealer will flip their facedown card and draw until they hit a score over 16 or they bust.
 
 4) After the dealer goes, you will either have your bet added or subtracted from your chip count. If you run out of chips, the game will reset you back to the initial chip count of 2000.
 
