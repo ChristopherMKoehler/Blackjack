@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
+  min-width: 636px;
 }
 
 button {
@@ -100,6 +101,7 @@ img {
 .hand {
   margin-right: 20px;
   border-radius: 3px;
+  margin-bottom: 178px;
 }
 
 .bet-errors {
@@ -157,4 +159,8 @@ img {
 
 .play-action, .split {
   width: 100px;
+}
+
+.player-actions {
+  display: flex;
 }
