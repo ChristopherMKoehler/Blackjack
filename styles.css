@@ -17,11 +17,7 @@ button {
   background: lightgray;
   border-radius: 3px;
   padding: 10px;
-<<<<<<< HEAD
-  margin: 1px;
-=======
   margin: 2px;
->>>>>>> master
 }
 
 button:hover {
@@ -38,7 +34,6 @@ img {
   margin-top: 88px;
   display: flex;
   flex-direction: row;
-  margin-top: 88px;
   align-items: center;
 }
 
