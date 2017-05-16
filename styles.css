@@ -159,3 +159,25 @@ img {
 .player-actions {
   display: flex;
 }
+
+.personal {
+  position: absolute;
+  z-index: 100;
+}
+
+.list-inline {
+  list-style: none;
+
+}
+
+.list-inline li {
+  font-size: 36px;
+}
+
+.fa-fw:hover {
+  color: white;
+}
+
+.fa-fw {
+  color: black;
+}
