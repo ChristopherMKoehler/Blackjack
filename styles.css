@@ -181,3 +181,11 @@ img {
 .fa-fw {
   color: black;
 }
+
+#user {
+  font-size: 36px;
+}
+
+#user:hover {
+  color:white;
+}
