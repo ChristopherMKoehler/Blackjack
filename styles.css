@@ -91,6 +91,7 @@ img {
   position: absolute;
   margin: 0px;
   top: 39%;
+  text-shadow: 4px 0 white;
 }
 
 .player-cards {
