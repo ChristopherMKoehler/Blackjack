@@ -33,6 +33,7 @@ img {
 .dealer-cards {
   margin-top: 88px;
   display: flex;
+  z-index: 1;
   flex-direction: row;
   align-items: center;
 }
@@ -87,16 +88,19 @@ img {
   font-family: 'Shrikhand', cursive;
   font-weight: bold;
   font-size: 100px;
+  position: absolute;
+  margin: 0px;
+  top: 39%;
 }
 
 .player-cards {
   display: flex;
+  z-index: 1;
 }
 
 .hand {
   margin-right: 20px;
   border-radius: 3px;
-  margin-bottom: 178px;
 }
 
 .bet-errors {
